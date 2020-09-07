@@ -3,10 +3,11 @@ import csv
 import datetime
 import os
 import sys
+from pathlib import Path
 
 date = datetime.datetime.now().strftime('%Y-%m-%d')
 url = 'https://court-case-service.apps.live-1.cloud-platform.service.justice.gov.uk/court/B10JQ00/cases?date=%s' % date
-file_name = 'court-list-%s.csv' % date
+file_name = '%s/temp/court-list-%s.csv' % (Path.home(), date)
 
 try:
     headers = {
@@ -18,6 +19,10 @@ except KeyError:
 
 print("🏃🏻‍ ️Getting: %s" % url)
 r = requests.get(url, headers=headers)
+
+if r.status_code != 200:
+    print("💥 Failed to fetch case list, unexpected response status: %s" % r.status_code)
+    sys.exit(1)
 
 print("✨ Status code: %s" % r.status_code)
 

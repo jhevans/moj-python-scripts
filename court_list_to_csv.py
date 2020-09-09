@@ -10,7 +10,7 @@ from pathlib import Path
 auth_url = 'https://sign-in.hmpps.service.justice.gov.uk/auth/oauth/token'
 date = datetime.datetime.now().strftime('%Y-%m-%d')
 url = 'https://court-case-service.apps.live-1.cloud-platform.service.justice.gov.uk/court/B10JQ00/cases?date=%s' % date
-file_name = '%s/temp/court-list-%s.csv' % (Path.home(), date)
+file_name = '%s/Google Drive/N Tyneside Court Lists/court-list-%s.csv' % (Path.home(), date)
 
 try:
     client_id = os.environ['CLIENT_ID']
@@ -57,7 +57,7 @@ print("🚚 %s items in response" % len(cases))
 
 with open(file_name, 'w', newline='') as csvfile:
     print("💾 Writing to file...")
-    fieldnames = ['defendant_name', 'case_no', 'crn', 'court_room', 'session', 'list_no', 'probation_status']
+    fieldnames = ['defendant_name', 'defendant_dob', 'case_no', 'crn', 'court_room', 'session', 'list_no', 'probation_status']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
     writer.writeheader()
@@ -65,6 +65,7 @@ with open(file_name, 'w', newline='') as csvfile:
     for case in cases:
         writer.writerow({
             'defendant_name': case["defendantName"],
+            'defendant_dob': case["defendantDob"],
             'crn': case.get("crn", None),
             'probation_status': case["probationStatus"],
             'court_room': case["courtRoom"],

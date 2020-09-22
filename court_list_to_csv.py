@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 auth_url = 'https://sign-in.hmpps.service.justice.gov.uk/auth/oauth/token'
-date = datetime.datetime.now().strftime('%Y-%m-%d')
+date = os.environ.get('DATE') or datetime.datetime.now().strftime('%Y-%m-%d')
 url = 'https://court-case-service.apps.live-1.cloud-platform.service.justice.gov.uk/court/B10JQ00/cases?date=%s' % date
 file_name = '%s/Google Drive/N Tyneside Court Lists/court-list-%s.csv' % (Path.home(), date)
 
@@ -65,7 +65,7 @@ with open(file_name, 'w', newline='') as csvfile:
     for case in cases:
         writer.writerow({
             'defendant_name': case["defendantName"],
-            'defendant_dob': case["defendantDob"],
+            'defendant_dob': case.get("defendantDob"),
             'crn': case.get("crn", None),
             'probation_status': case["probationStatus"],
             'court_room': case["courtRoom"],

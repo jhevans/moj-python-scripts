@@ -22,7 +22,7 @@ except KeyError:
     sys.exit(1)
 
 
-def getAccessToken():
+def get_access_token():
     print("🏃🏻‍ ️Getting access token: %s" % auth_url)
     data = {
         "grant_type": "client_credentials"
@@ -37,13 +37,10 @@ def getAccessToken():
 
     return response.json()["access_token"]
 
-try:
-    headers = {
-        "Authorization": "Bearer %s" % getAccessToken()
-    }
-except KeyError:
-    print("⛔️ Cannot fetch case list, TOKEN environment variable is required")
-    sys.exit(1)
+
+headers = {
+    "Authorization": "Bearer %s" % get_access_token()
+}
 
 print("🏃🏻‍ ️Getting: %s" % url)
 response = requests.get(url, headers=headers)

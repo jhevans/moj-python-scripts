@@ -9,8 +9,10 @@ from pathlib import Path
 
 auth_url = 'https://sign-in.hmpps.service.justice.gov.uk/auth/oauth/token'
 date = os.environ.get('DATE') or datetime.datetime.now().strftime('%Y-%m-%d')
-url = 'https://court-case-service.apps.live-1.cloud-platform.service.justice.gov.uk/court/B10JQ00/cases?date=%s' % date
-file_name = '%s/Google Drive/N Tyneside Court Lists/court-list-%s.csv' % (Path.home(), date)
+court_code = os.environ.get('COURT_CODE') or 'B10JQ00'
+url = 'https://court-case-service.apps.live-1.cloud-platform.service.justice.gov.uk/court/%s/cases?date=%s' % (court_code, date)
+folder_name = os.environ.get('FOLDER_NAME') or 'N Tyneside Court Lists'
+file_name = '%s/Google Drive/%s/court-list-%s.csv' % (Path.home(), folder_name, date)
 
 try:
     client_id = os.environ['CLIENT_ID']
